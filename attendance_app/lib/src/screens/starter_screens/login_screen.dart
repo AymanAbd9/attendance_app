@@ -1,4 +1,6 @@
+import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:attendance_app/src/services/auth_service.dart';
 
 class LoginScreenView extends StatelessWidget {
   LoginScreenView({Key? key, required this.isTeacher}) : super(key: key);
@@ -8,6 +10,8 @@ class LoginScreenView extends StatelessWidget {
   final bool isTeacher;
   final emailController = TextEditingController();
   String? email;
+
+  final AuthService _authService = AuthService();
 
   final passwordController = TextEditingController();
 
@@ -43,7 +47,6 @@ class LoginScreenView extends StatelessWidget {
                     // email text field
                     Container(
                       child: TextFormField(
-                        keyboardType: TextInputType.number,
                         controller: emailController,
                         decoration: const InputDecoration(
                           label: Text('email'),
@@ -63,7 +66,6 @@ class LoginScreenView extends StatelessWidget {
                     // password text field
                     Container(
                       child: TextFormField(
-                        keyboardType: TextInputType.number,
                         controller: passwordController,
                         decoration: const InputDecoration(
                           label: Text('password'),
@@ -84,11 +86,18 @@ class LoginScreenView extends StatelessWidget {
             //submit button
             ElevatedButton(
               // TODO: login the user
-              onPressed: () {
+              onPressed: () async {
                 debugPrint('======> login screen');
                 debugPrint('email: ====> ${emailController.text}');
                 debugPrint('password: ====> ${passwordController.text}');
                 debugPrint('teacher: ====> $isTeacher');
+                await _authService.loginWithEmailAndPassword(
+                    emailController.text, passwordController.text);
+                // TODO: go to student screen if isTeacher is false
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => StudentHomeScreen()),
+                  ((route) => false),
+                );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.3,

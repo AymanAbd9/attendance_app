@@ -1,3 +1,6 @@
+import 'package:attendance_app/src/data_models/general_user_model.dart';
+import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
+import 'package:attendance_app/src/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreenView extends StatelessWidget {
@@ -6,7 +9,7 @@ class RegisterScreenView extends StatelessWidget {
   static const routeName = '/register_screen';
 
   final bool isTeacher;
-
+  final AuthService _authService = AuthService();
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -65,7 +68,6 @@ class RegisterScreenView extends StatelessWidget {
                       height: 20,
                     ),
 
-
                     // username text field
                     Container(
                       child: TextFormField(
@@ -111,13 +113,31 @@ class RegisterScreenView extends StatelessWidget {
             //submit button
             ElevatedButton(
               // TODO: register the user
-              onPressed: () {
+              onPressed: () async {
                 username = usernameController.text.trim();
-                 debugPrint('======> register screen');
-                  debugPrint('email: ====> ${emailController.text}');
-                  debugPrint('username: ====> $username');
-                  debugPrint('password: ====> ${passwordController.text}');
-                  debugPrint('teacher: ====> $isTeacher');
+                debugPrint('======> register screen');
+                debugPrint('email: ====> ${emailController.text}');
+                debugPrint('username: ====> $username');
+                debugPrint('password: ====> ${passwordController.text}');
+                debugPrint('teacher: ====> $isTeacher');
+                await _authService.registerWithEmailAndPassword(
+                    emailController.text, passwordController.text);
+
+                GeneralUser _generalUser = GeneralUser(
+                  uid: _authService.user!.uid,
+                  email: emailController.text,
+                  username: username!,
+                  isTeacher: isTeacher,
+                );
+
+                _authService.setTheGUser(_generalUser);
+
+                _authService.addtheUserToTheDatabase(_generalUser);
+
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => StudentHomeScreen()),
+                  ((route) => false),
+                );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.3,
