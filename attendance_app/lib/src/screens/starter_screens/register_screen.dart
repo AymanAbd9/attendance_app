@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/data_models/general_user_model.dart';
 import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
+import 'package:attendance_app/src/widgets/auth_handler.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreenView extends StatelessWidget {
@@ -101,6 +102,7 @@ class RegisterScreenView extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(32.0)),
                           ),
                         ),
+                        obscureText: true,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -133,11 +135,13 @@ class RegisterScreenView extends StatelessWidget {
                 _authService.setTheGUser(_generalUser);
 
                 _authService.addtheUserToTheDatabase(_generalUser);
-
+                
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => StudentHomeScreen()),
+                  MaterialPageRoute(builder: (_) => AuthHandler()),
                   ((route) => false),
                 );
+                
+                
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.3,
