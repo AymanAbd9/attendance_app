@@ -57,6 +57,22 @@ class AuthService extends ChangeNotifier {
     setTheGUser(gUser);
   }
 
+
+   Future<bool> fetchUserInfo(String uid) async {
+    DocumentSnapshot _userSnap =
+        await _firestore.collection('users').doc(uid).get();
+    if (_userSnap.exists) {
+      //map the data to a general_user data model
+      GeneralUser _generalUser =
+          GeneralUser.fromMap(_userSnap.data() as Map<String, dynamic>);
+      setTheGUser(_generalUser);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
   logOut() async {
     await _auth.signOut();
     setTheUser(null);

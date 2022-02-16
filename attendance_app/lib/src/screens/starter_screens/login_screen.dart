@@ -1,4 +1,5 @@
 import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
+import 'package:attendance_app/src/widgets/auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
 
@@ -74,6 +75,7 @@ class LoginScreenView extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(32.0)),
                           ),
                         ),
+                        obscureText: true,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -91,11 +93,12 @@ class LoginScreenView extends StatelessWidget {
                 debugPrint('email: ====> ${emailController.text}');
                 debugPrint('password: ====> ${passwordController.text}');
                 debugPrint('teacher: ====> $isTeacher');
+                
                 await _authService.loginWithEmailAndPassword(
                     emailController.text, passwordController.text);
                 // TODO: go to student screen if isTeacher is false
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => StudentHomeScreen()),
+                  MaterialPageRoute(builder: (_) => AuthHandler()),
                   ((route) => false),
                 );
               },

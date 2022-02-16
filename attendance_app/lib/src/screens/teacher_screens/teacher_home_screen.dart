@@ -2,17 +2,17 @@ import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
 
-class StudentHomeScreen extends StatelessWidget {
-  StudentHomeScreen({Key? key}) : super(key: key);
+class TeacherHomeScreen extends StatelessWidget {
+  TeacherHomeScreen({Key? key}) : super(key: key);
   final AuthService _authService = AuthService();
-  static const routeName = 'student_home_screen';
+  static const routeName = 'teacher_home_screen';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // floatingActionButton:
       appBar: AppBar(
-        title: const Text('Student Home Page'),
+        title: const Text('Teacher Home Page'),
         actions: [
           IconButton(
               onPressed: () async {
@@ -33,12 +33,12 @@ class StudentHomeScreen extends StatelessWidget {
         crossAxisSpacing: 5,
         mainAxisSpacing: 5,
         children: const [
-          StudentButton(
+          TeacherButton(
             label: "Flutter",
             icon: Icons.list_alt,
             // route:
           ),
-          StudentButton(
+          TeacherButton(
             label: "UX/UI",
             icon: Icons.qr_code_scanner_outlined,
             // route:
@@ -49,11 +49,11 @@ class StudentHomeScreen extends StatelessWidget {
   }
 }
 
-class StudentButton extends StatelessWidget {
+class TeacherButton extends StatelessWidget {
   final String label;
   final IconData icon;
   // final String route;
-  const StudentButton({
+  const TeacherButton({
     Key? key,
     required this.label,
     required this.icon,
@@ -70,7 +70,7 @@ class StudentButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
-        color: Colors.cyan,
+        color: Colors.blue,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
