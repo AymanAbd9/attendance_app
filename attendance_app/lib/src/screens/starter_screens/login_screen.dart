@@ -1,7 +1,9 @@
+import 'package:attendance_app/src/data_models/general_user_model.dart';
 import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
 import 'package:attendance_app/src/widgets/auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreenView extends StatelessWidget {
   LoginScreenView({Key? key, required this.isTeacher}) : super(key: key);
@@ -56,6 +58,7 @@ class LoginScreenView extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(32.0)),
                           ),
                         ),
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -93,9 +96,18 @@ class LoginScreenView extends StatelessWidget {
                 debugPrint('email: ====> ${emailController.text}');
                 debugPrint('password: ====> ${passwordController.text}');
                 debugPrint('teacher: ====> $isTeacher');
-                
-                await _authService.loginWithEmailAndPassword(
-                    emailController.text, passwordController.text);
+
+                await Provider.of<AuthService>(context, listen: false)
+                    .loginWithEmailAndPassword(
+                        //TODO: check this debugPrint
+                        emailController.text,
+                        passwordController.text)
+                    .then((value) async {
+                  await Provider.of<AuthService>(context, listen: false)
+                      .fetchUserInfo(value!.user!.uid);
+                  debugPrint(
+                      'login screen =================> ${Provider.of<AuthService>(context, listen: false).generalUser!.username}');
+                });
                 // TODO: go to student screen if isTeacher is false
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => AuthHandler()),

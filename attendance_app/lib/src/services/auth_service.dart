@@ -12,11 +12,12 @@ class AuthService extends ChangeNotifier {
   User? user = FirebaseAuth.instance.currentUser;
 
   void setTheUser(theUser) {
+    // we have uid after login and register
     user = theUser;
   }
 
   void setTheGUser(GeneralUser theGeneralUser) {
-    debugPrint(theGeneralUser.uid);
+    // debugPrint(theGeneralUser.uid);
     generalUser = theGeneralUser;
     notifyListeners();
   }

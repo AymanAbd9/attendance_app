@@ -1,10 +1,11 @@
+import 'package:attendance_app/src/data_models/class_button.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class StudentHomeScreen extends StatelessWidget {
   StudentHomeScreen({Key? key}) : super(key: key);
-  final AuthService _authService = AuthService();
   static const routeName = 'student_home_screen';
 
   @override
@@ -16,7 +17,7 @@ class StudentHomeScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                await _authService.logOut();
+                await Provider.of<AuthService>(context, listen: false).logOut();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const WelcomeScreenView()),
                   ((route) => false),
@@ -32,21 +33,37 @@ class StudentHomeScreen extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 5,
         mainAxisSpacing: 5,
-        children: const [
-          StudentButton(
-            label: "Flutter",
-            icon: Icons.list_alt,
-            // route:
-          ),
-          StudentButton(
-            label: "UX/UI",
-            icon: Icons.qr_code_scanner_outlined,
-            // route:
-          ),
-        ],
+        children: generateButtons(),
+        // children: const [
+        //   // StudentButton(
+        //   //   label: "Flutter",
+        //   //   icon: Icons.list_alt,
+        //   //   // route:
+        //   // ),
+        //   // StudentButton(
+        //   //   label: "UX/UI",
+        //   //   icon: Icons.qr_code_scanner_outlined,
+        //   //   // route:
+        //   // ),
+        // ],
       ),
     );
   }
+  List<Widget> generateButtons() {
+    ClassButton _classButton = ClassButton();
+    List<Widget> _widgets = [ ]; 
+    _classButton.studentButtons!.forEach((key, value) { 
+      _widgets.add(
+        ElevatedButton(
+          
+          onPressed: () { 
+          // navigate bo afsdasdf/value
+          },
+          child: Text(key))
+      );
+    });
+    return _widgets;
+}
 }
 
 class StudentButton extends StatelessWidget {

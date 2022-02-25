@@ -1,22 +1,37 @@
+import 'package:attendance_app/src/data_models/class_model.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
+import 'package:attendance_app/src/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
-class TeacherHomeScreen extends StatelessWidget {
+class TeacherHomeScreen extends StatefulWidget {
   TeacherHomeScreen({Key? key}) : super(key: key);
-  final AuthService _authService = AuthService();
   static const routeName = 'teacher_home_screen';
 
   @override
+  State<TeacherHomeScreen> createState() => _TeacherHomeScreenState();
+}
+
+class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
+
+  // TODO: get the general user after logging in (in here or in login_screen)
+  
+
+
+  final FirestoreService _firestoreService = FirestoreService();
+
+  ClassRoom? classRoom;
+  var classNameController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton:
       appBar: AppBar(
         title: const Text('Teacher Home Page'),
         actions: [
           IconButton(
               onPressed: () async {
-                await _authService.logOut();
+                await  Provider.of<AuthService>(context, listen: false).logOut();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const WelcomeScreenView()),
                   ((route) => false),
@@ -44,6 +59,53 @@ class TeacherHomeScreen extends StatelessWidget {
             // route:
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (ctx) {
+                return Container(
+                  margin: const EdgeInsets.all(10),
+                  child: AlertDialog(
+                    alignment: Alignment.center,
+                    title: const Text('Create class'),
+                    content: Container(
+                      height: 180,
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextField(
+                            controller: classNameController,
+                            keyboardType: TextInputType.name,
+                            decoration: const InputDecoration(
+                              labelText: 'class name',
+                            ),
+                          ),
+                          // const SizedBox(height: 50),
+                          ElevatedButton(
+                              onPressed: () {
+                                classRoom = ClassRoom(
+                                  name: classNameController.text.trim(),
+                                  ownerName: Provider.of<AuthService>(context, listen: false).generalUser!.username,
+                                  participants: 0,
+                                );
+
+                                // debugPrint('======> ${authProvider.ge}');
+                                debugPrint(
+                                    '======> ${classRoom!.name}');
+                                debugPrint('======> ${classRoom!.ownerName}');
+                              },
+                              child: const Text('create class'))
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              });
+        },
       ),
     );
   }

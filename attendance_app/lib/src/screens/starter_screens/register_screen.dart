@@ -1,8 +1,8 @@
 import 'package:attendance_app/src/data_models/general_user_model.dart';
-import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
 import 'package:attendance_app/src/widgets/auth_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreenView extends StatelessWidget {
   RegisterScreenView({Key? key, required this.isTeacher}) : super(key: key);
@@ -10,7 +10,7 @@ class RegisterScreenView extends StatelessWidget {
   static const routeName = '/register_screen';
 
   final bool isTeacher;
-  final AuthService _authService = AuthService();
+  final AuthService  _authService = AuthService();
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -51,7 +51,7 @@ class RegisterScreenView extends StatelessWidget {
                     Container(
                       child: TextFormField(
                         controller: emailController,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           labelText: 'email',
                           border: OutlineInputBorder(
@@ -122,19 +122,19 @@ class RegisterScreenView extends StatelessWidget {
                 debugPrint('username: ====> $username');
                 debugPrint('password: ====> ${passwordController.text}');
                 debugPrint('teacher: ====> $isTeacher');
-                await _authService.registerWithEmailAndPassword(
+                await  Provider.of<AuthService>(context, listen: false).registerWithEmailAndPassword(
                     emailController.text, passwordController.text);
 
                 GeneralUser _generalUser = GeneralUser(
-                  uid: _authService.user!.uid,
+                  uid:  Provider.of<AuthService>(context, listen: false).user!.uid,
                   email: emailController.text,
                   username: username!,
                   isTeacher: isTeacher,
                 );
 
-                _authService.setTheGUser(_generalUser);
+                 Provider.of<AuthService>(context, listen: false).setTheGUser(_generalUser);
 
-                _authService.addtheUserToTheDatabase(_generalUser);
+                 Provider.of<AuthService>(context, listen: false).addtheUserToTheDatabase(_generalUser);
                 
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => AuthHandler()),

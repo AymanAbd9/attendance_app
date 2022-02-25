@@ -9,19 +9,19 @@ import 'package:provider/provider.dart';
 class AuthHandler extends StatelessWidget {
   AuthHandler({Key? key}) : super(key: key);
 
-  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
 
-    User? user = _authService.user; //firebase auth user
-
+    User? user = Provider.of<AuthService>(context).user; //firebase auth user
+    // debugPrint('========>' + user.toString());
     //checking with the firebase auth service for user
     if (user != null) {
       return Scaffold(
         backgroundColor: Colors.blue,
         body: FutureBuilder(
-          future: _authService.fetchUserInfo(user.uid),
+          // TODO: add await
+          future:  Provider.of<AuthService>(context, listen: false).fetchUserInfo(user.uid),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
@@ -31,7 +31,7 @@ class AuthHandler extends StatelessWidget {
               return const Text('empty');
             } else if (snapshot.data == true) {
               //is teacher  or is student
-              if (_authService.generalUser!.isTeacher) {
+              if ( Provider.of<AuthService>(context).generalUser!.isTeacher) {
                 return TeacherHomeScreen(); // change it to teacher
               } else {
                 return StudentHomeScreen();
