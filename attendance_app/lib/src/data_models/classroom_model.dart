@@ -2,23 +2,23 @@ import 'dart:convert';
 
 class Classroom {
   String? name;
-  String? ownerName;
+  String? teacherName;
   int? participants;
   Classroom({
      this.name,
-     this.ownerName,
+     this.teacherName,
      this.participants,
   });
   
 
   Classroom copyWith({
     String? name,
-    String? ownerName,
+    String? teacherName,
     int? participants,
   }) {
     return Classroom(
       name: name ?? this.name,
-      ownerName: ownerName ?? this.ownerName,
+      teacherName: teacherName ?? this.teacherName,
       participants: participants ?? this.participants,
     );
   }
@@ -26,7 +26,7 @@ class Classroom {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'ownerName': ownerName,
+      'teacherName': teacherName,
       'participants': participants,
     };
   }
@@ -34,7 +34,7 @@ class Classroom {
   factory Classroom.fromMap(Map<String, dynamic> map) {
     return Classroom(
       name: map['name'],
-      ownerName: map['ownerName'],
+      teacherName: map['teacherName'],
       participants: map['participants']?.toInt(),
     );
   }
@@ -44,7 +44,7 @@ class Classroom {
   factory Classroom.fromJson(String source) => Classroom.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Classroom(name: $name, ownerName: $ownerName, participants: $participants)';
+  String toString() => 'Classroom(name: $name, teacherName: $teacherName, participants: $participants)';
 
   @override
   bool operator ==(Object other) {
@@ -52,10 +52,10 @@ class Classroom {
   
     return other is Classroom &&
       other.name == name &&
-      other.ownerName == ownerName &&
+      other.teacherName == teacherName &&
       other.participants == participants;
   }
 
   @override
-  int get hashCode => name.hashCode ^ ownerName.hashCode ^ participants.hashCode;
+  int get hashCode => name.hashCode ^ teacherName.hashCode ^ participants.hashCode;
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-class ClassButton {
+class ClassButtons {
   Map<String, dynamic>? studentButtons = {
     'view_attendance': '/view_attendace',
     'scan_qr': '/scan_qr',

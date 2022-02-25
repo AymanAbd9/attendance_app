@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/data_models/classroom_model.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
 import 'package:attendance_app/src/services/firestore_service.dart';
+import 'package:attendance_app/src/widgets/buttons/classroom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +15,7 @@ class TeacherHomeScreen extends StatefulWidget {
 }
 
 class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
-
   // TODO: get the general user after logging in (in here or in login_screen)
-  
-
 
   final FirestoreService _firestoreService = FirestoreService();
 
@@ -31,7 +29,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                await  Provider.of<AuthService>(context, listen: false).logOut();
+                await Provider.of<AuthService>(context, listen: false).logOut();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const WelcomeScreenView()),
                   ((route) => false),
@@ -40,25 +38,38 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
               icon: const Icon(Icons.logout)),
         ],
       ),
-      body: GridView.count(
-        // Create a grid with 2 columns. If you change the scrollDirection to
-        // horizontal, this produces 2 rows.
-        // scrollDirection: Axis.horizontal,
-        crossAxisCount: 2,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        children: const [
-          TeacherButton(
-            label: "Flutter",
-            icon: Icons.list_alt,
-            // route:
-          ),
-          TeacherButton(
-            label: "UX/UI",
-            icon: Icons.qr_code_scanner_outlined,
-            // route:
-          ),
-        ],
+      body: StreamBuilder<List<Classroom>>(
+        stream: _firestoreService.streamOfClassrooms(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            debugPrint('==========> teacher screen:  ${snapshot.error}');
+            return const Text('an error has occured');
+          } else if (snapshot.data!.isEmpty) {
+            return const Center(child: Text('no classes'));
+          } else {
+            // return ListView.builder(
+            //   itemCount: snapshot.data!.length,
+            //   itemBuilder: (context, index) {
+            //     return ClassroomButton(classroom: snapshot.data![index]);
+            //   });
+            return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 10
+                    // crossAxisCount: 2,
+
+                    ),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  return ClassroomButton(classroom: snapshot.data![index]);
+                  
+                });
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -89,15 +100,17 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                               onPressed: () async {
                                 classroom = Classroom(
                                   name: classNameController.text.trim(),
-                                  ownerName: Provider.of<AuthService>(context, listen: false).generalUser!.username,
+                                  teacherName: Provider.of<AuthService>(context,
+                                          listen: false)
+                                      .generalUser!
+                                      .username,
                                   participants: 0,
                                 );
 
-                                // debugPrint('======> ${authProvider.ge}');
-                                debugPrint(
-                                    '======> ${classroom!.name}');
-                                debugPrint('======> ${classroom!.ownerName}');
-                                await _firestoreService.createClassroom(classroom!);
+                                debugPrint('======> ${classroom!.name}');
+                                debugPrint('======> ${classroom!.teacherName}');
+                                await _firestoreService
+                                    .createClassroom(classroom!).then((value) => classNameController.clear());
                                 Navigator.of(context).pop();
                               },
                               child: const Text('create class'))
@@ -113,42 +126,26 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
   }
 }
 
-class TeacherButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  // final String route;
-  const TeacherButton({
-    Key? key,
-    required this.label,
-    required this.icon,
-    // required this.route,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(10),
-      child: Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        color: Colors.blue,
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            // Navigator.pushNamed(context, route);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon),
-              Text(label),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+
+
+// return GridView.count(
+//             // Create a grid with 2 columns. If you change the scrollDirection to
+//             // horizontal, this produces 2 rows.
+//             // scrollDirection: Axis.horizontal,
+//             crossAxisCount: 2,
+//             crossAxisSpacing: 5,
+//             mainAxisSpacing: 5,
+//             children: const [
+//               TeacherButton(
+//                 label: "Flutter",
+//                 icon: Icons.list_alt,
+//                 // route:
+//               ),
+//               TeacherButton(
+//                 label: "UX/UI",
+//                 icon: Icons.qr_code_scanner_outlined,
+//                 // route:
+//               ),
+//             ],
+//           );

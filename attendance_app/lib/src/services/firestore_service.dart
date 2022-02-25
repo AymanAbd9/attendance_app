@@ -18,10 +18,10 @@ class FirestoreService {
 
   //read a stream of classes to the screen
   Stream<List<Classroom>> streamOfClassrooms() {
-    return _firebaseFirestore.collection('classes').snapshots().map(
-          (v) => v.docs
+    return _firebaseFirestore.collection('classes').orderBy('name').snapshots().map(
+          (querySnapshot) => querySnapshot.docs
               .map(
-                (e) => Classroom.fromMap(e.data()),
+                (doc) => Classroom.fromMap(doc.data()),
               )
               .toList(),
         );

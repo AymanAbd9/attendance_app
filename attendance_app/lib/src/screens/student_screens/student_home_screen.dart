@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/data_models/class_button.dart';
+import 'package:attendance_app/src/widgets/buttons/classroom_buttons.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
@@ -50,9 +50,9 @@ class StudentHomeScreen extends StatelessWidget {
     );
   }
   List<Widget> generateButtons() {
-    ClassButton _classButton = ClassButton();
+    ClassButtons _classButtons = ClassButtons();
     List<Widget> _widgets = [ ]; 
-    _classButton.studentButtons!.forEach((key, value) { 
+    _classButtons.studentButtons!.forEach((key, value) { 
       _widgets.add(
         ElevatedButton(
           
@@ -66,42 +66,4 @@ class StudentHomeScreen extends StatelessWidget {
 }
 }
 
-class StudentButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  // final String route;
-  const StudentButton({
-    Key? key,
-    required this.label,
-    required this.icon,
-    // required this.route,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.all(10),
-      child: Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        color: Colors.cyan,
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            // Navigator.pushNamed(context, route);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon),
-              Text(label),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
