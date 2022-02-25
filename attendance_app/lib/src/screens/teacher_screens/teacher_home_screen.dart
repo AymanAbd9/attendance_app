@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/data_models/class_model.dart';
+import 'package:attendance_app/src/data_models/classroom_model.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
 import 'package:attendance_app/src/services/firestore_service.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
   final FirestoreService _firestoreService = FirestoreService();
 
-  ClassRoom? classRoom;
+  Classroom? classroom;
   var classNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -86,8 +86,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                           ),
                           // const SizedBox(height: 50),
                           ElevatedButton(
-                              onPressed: () {
-                                classRoom = ClassRoom(
+                              onPressed: () async {
+                                classroom = Classroom(
                                   name: classNameController.text.trim(),
                                   ownerName: Provider.of<AuthService>(context, listen: false).generalUser!.username,
                                   participants: 0,
@@ -95,8 +95,10 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
                                 // debugPrint('======> ${authProvider.ge}');
                                 debugPrint(
-                                    '======> ${classRoom!.name}');
-                                debugPrint('======> ${classRoom!.ownerName}');
+                                    '======> ${classroom!.name}');
+                                debugPrint('======> ${classroom!.ownerName}');
+                                await _firestoreService.createClassroom(classroom!);
+                                Navigator.of(context).pop();
                               },
                               child: const Text('create class'))
                         ],
