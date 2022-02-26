@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
-class StudentHomeScreen extends StatelessWidget {
-  StudentHomeScreen({Key? key}) : super(key: key);
+class StudentHomeScreenView extends StatelessWidget {
+  StudentHomeScreenView({Key? key}) : super(key: key);
   static const routeName = 'student_home_screen';
 
   @override

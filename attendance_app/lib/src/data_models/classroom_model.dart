@@ -4,10 +4,12 @@ class Classroom {
   String? name;
   String? teacherName;
   int? participants;
+  String? uid;
   Classroom({
-     this.name,
-     this.teacherName,
-     this.participants,
+    this.name,
+    this.teacherName,
+    this.participants,
+    this.uid,
   });
   
 
@@ -15,11 +17,13 @@ class Classroom {
     String? name,
     String? teacherName,
     int? participants,
+    String? uid,
   }) {
     return Classroom(
       name: name ?? this.name,
       teacherName: teacherName ?? this.teacherName,
       participants: participants ?? this.participants,
+      uid: uid ?? this.uid,
     );
   }
 
@@ -28,6 +32,7 @@ class Classroom {
       'name': name,
       'teacherName': teacherName,
       'participants': participants,
+      'uid': uid,
     };
   }
 
@@ -36,6 +41,7 @@ class Classroom {
       name: map['name'],
       teacherName: map['teacherName'],
       participants: map['participants']?.toInt(),
+      uid: map['uid'],
     );
   }
 
@@ -44,7 +50,9 @@ class Classroom {
   factory Classroom.fromJson(String source) => Classroom.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Classroom(name: $name, teacherName: $teacherName, participants: $participants)';
+  String toString() {
+    return 'Classroom(name: $name, teacherName: $teacherName, participants: $participants, uid: $uid)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -53,9 +61,15 @@ class Classroom {
     return other is Classroom &&
       other.name == name &&
       other.teacherName == teacherName &&
-      other.participants == participants;
+      other.participants == participants &&
+      other.uid == uid;
   }
 
   @override
-  int get hashCode => name.hashCode ^ teacherName.hashCode ^ participants.hashCode;
+  int get hashCode {
+    return name.hashCode ^
+      teacherName.hashCode ^
+      participants.hashCode ^
+      uid.hashCode;
+  }
 }

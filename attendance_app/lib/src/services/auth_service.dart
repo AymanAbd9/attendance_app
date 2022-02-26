@@ -1,4 +1,5 @@
 
+import 'package:attendance_app/src/data_models/classroom_model.dart';
 import 'package:attendance_app/src/data_models/general_user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,15 @@ class AuthService extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   GeneralUser? generalUser;
   User? user = FirebaseAuth.instance.currentUser;
+  Classroom? classroom;
+
+   String? theError;
+
+  //a void func to set the error message
+  void setTheError(String? err) {
+    theError = err;
+    notifyListeners();
+  }
 
   void setTheUser(theUser) {
     // we have uid after login and register
@@ -28,8 +38,10 @@ class AuthService extends ChangeNotifier {
       UserCredential theUserCredentials = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       setTheUser(theUserCredentials.user);
+      setTheError(null);
       return theUserCredentials;
     } on FirebaseAuthException catch (e) {
+      setTheError('email already exists');
       debugPrint(e.message);
     }
   }
@@ -42,9 +54,10 @@ class AuthService extends ChangeNotifier {
       UserCredential theUserCredentials = await _auth
           .signInWithEmailAndPassword(email: email, password: password);
       setTheUser(theUserCredentials.user);
+      setTheError(null);
       return theUserCredentials;
     } on FirebaseAuthException catch (err) {
-      debugPrint(err.message!);
+      setTheError('invalid username or password');
       debugPrint("==========>>>>>>" + err.message!);
     }
   }
@@ -72,6 +85,10 @@ class AuthService extends ChangeNotifier {
       return false;
     }
   }
+
+  // Future<void> fetchClassroom(String uid) {
+  //   DocumentSnapshot _teacherClassroom
+  // }
 
 
   logOut() async {

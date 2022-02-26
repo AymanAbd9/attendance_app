@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/starter_screens/welcome_screen.dart';
 
@@ -11,11 +11,10 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       title: 'attendance app',
       home: const WelcomeScreenView(),
-      // home: StudentHomeScreen(),
       // routes: {
-      //   WelcomeScreenView.routeName:(context) => const WelcomeScreenView(),
-      // //   RegisterScreenView.routeName: (context) => RegisterScreenView(),
-      // //   LoginScreenView.routeName: (context) => LoginScreenView(),
+      //   //TODO: specify student classroom details screen view here
+      //   // WelcomeScreenView.routeName:(context) => const WelcomeScreenView(),
+      //   // TeacherClassroomDetailScreenView.routeName: (context) => TeacherClassroomDetailScreenView(),
       // },
     );
   }

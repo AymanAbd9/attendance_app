@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-// TODO: make a datamodel for general user
 
 class GeneralUser {
   String uid;

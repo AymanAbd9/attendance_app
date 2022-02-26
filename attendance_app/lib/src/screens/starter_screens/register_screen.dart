@@ -10,7 +10,6 @@ class RegisterScreenView extends StatelessWidget {
   static const routeName = '/register_screen';
 
   final bool isTeacher;
-  final AuthService  _authService = AuthService();
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -108,13 +107,26 @@ class RegisterScreenView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
+
+                //error
+                Provider.of<AuthService>(context).theError == null
+                    ? Container()
+                    : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.center,
+                        child: Text(
+                          Provider.of<AuthService>(context).theError!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+
                   ],
                 ),
               ),
             ),
+
             //submit button
             ElevatedButton(
-              // TODO: register the user
               onPressed: () async {
                 username = usernameController.text.trim();
                 debugPrint('======> register screen');

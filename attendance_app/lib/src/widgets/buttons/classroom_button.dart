@@ -1,17 +1,25 @@
-
-
 import 'package:attendance_app/src/data_models/classroom_model.dart';
+import 'package:attendance_app/src/screens/student_screens/student_classroom_details_screen.dart';
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screen.dart';
+import 'package:attendance_app/src/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ClassroomButton extends StatelessWidget {
+class ClassroomButton extends StatefulWidget {
   final Classroom classroom;
   // final String route;
   const ClassroomButton({
-    Key? key, required this.classroom,
-    
+    Key? key,
+    required this.classroom,
+
     // required this.route,
   }) : super(key: key);
 
+  @override
+  State<ClassroomButton> createState() => _ClassroomButtonState();
+}
+
+class _ClassroomButtonState extends State<ClassroomButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,12 +34,24 @@ class ClassroomButton extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            // Navigator.pushNamed(context, route);
+            Provider.of<AuthService>(context, listen: false).generalUser!.isTeacher == true
+                ? Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TeacherClassroomDetailScreenView(
+                          classroom: widget.classroom),
+                    ),
+                  )
+                : Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => StudentClassDetailsScreenView(
+                          classroom: widget.classroom),
+                    ),
+                  );
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(classroom.name!),
+              Text(widget.classroom.name!),
             ],
           ),
         ),

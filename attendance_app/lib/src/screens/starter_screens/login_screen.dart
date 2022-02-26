@@ -1,5 +1,3 @@
-import 'package:attendance_app/src/data_models/general_user_model.dart';
-import 'package:attendance_app/src/screens/student_screens/student_home_screen.dart';
 import 'package:attendance_app/src/widgets/auth_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
@@ -13,8 +11,6 @@ class LoginScreenView extends StatelessWidget {
   final bool isTeacher;
   final emailController = TextEditingController();
   String? email;
-
-  final AuthService _authService = AuthService();
 
   final passwordController = TextEditingController();
 
@@ -84,22 +80,37 @@ class LoginScreenView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
+
+                //error
+                Provider.of<AuthService>(context).theError == null
+                    ? Container()
+                    : Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.center,
+                        child: Text(
+                          Provider.of<AuthService>(context).theError!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+
                   ],
                 ),
               ),
             ),
+
+
+            
+
             //submit button
             ElevatedButton(
-              // TODO: login the user
               onPressed: () async {
-                debugPrint('======> login screen');
-                debugPrint('email: ====> ${emailController.text}');
-                debugPrint('password: ====> ${passwordController.text}');
-                debugPrint('teacher: ====> $isTeacher');
+                // debugPrint('======> login screen');
+                // debugPrint('email: ====> ${emailController.text}');
+                // debugPrint('password: ====> ${passwordController.text}');
+                // debugPrint('teacher: ====> $isTeacher');
 
                 await Provider.of<AuthService>(context, listen: false)
                     .loginWithEmailAndPassword(
-                        //TODO: check this debugPrint
                         emailController.text,
                         passwordController.text)
                     .then((value) async {
@@ -108,7 +119,6 @@ class LoginScreenView extends StatelessWidget {
                   debugPrint(
                       'login screen =================> ${Provider.of<AuthService>(context, listen: false).generalUser!.username}');
                 });
-                // TODO: go to student screen if isTeacher is false
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => AuthHandler()),
                   ((route) => false),

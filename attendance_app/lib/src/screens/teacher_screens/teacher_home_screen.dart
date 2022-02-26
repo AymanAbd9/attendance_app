@@ -1,21 +1,21 @@
 import 'package:attendance_app/src/data_models/classroom_model.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screen.dart';
 import 'package:attendance_app/src/services/firestore_service.dart';
 import 'package:attendance_app/src/widgets/buttons/classroom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
-class TeacherHomeScreen extends StatefulWidget {
-  TeacherHomeScreen({Key? key}) : super(key: key);
+class TeacherHomeScreenView extends StatefulWidget {
+  TeacherHomeScreenView({Key? key}) : super(key: key);
   static const routeName = 'teacher_home_screen';
 
   @override
-  State<TeacherHomeScreen> createState() => _TeacherHomeScreenState();
+  State<TeacherHomeScreenView> createState() => _TeacherHomeScreenViewState();
 }
 
-class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
-  // TODO: get the general user after logging in (in here or in login_screen)
+class _TeacherHomeScreenViewState extends State<TeacherHomeScreenView> {
 
   final FirestoreService _firestoreService = FirestoreService();
 
@@ -54,14 +54,13 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
             //   itemBuilder: (context, index) {
             //     return ClassroomButton(classroom: snapshot.data![index]);
             //   });
+            // debugPrint(snapshot.data!.length.toString());
             return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
                     childAspectRatio: 3 / 2,
                     crossAxisSpacing: 5,
-                    mainAxisSpacing: 10
-                    // crossAxisCount: 2,
-
+                    mainAxisSpacing: 10,
                     ),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext ctx, index) {
@@ -105,6 +104,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                                       .generalUser!
                                       .username,
                                   participants: 0,
+                                  uid: Provider.of<AuthService>(context, listen: false).user!.uid,
                                 );
 
                                 debugPrint('======> ${classroom!.name}');

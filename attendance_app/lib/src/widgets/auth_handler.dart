@@ -20,7 +20,6 @@ class AuthHandler extends StatelessWidget {
       return Scaffold(
         backgroundColor: Colors.blue,
         body: FutureBuilder(
-          // TODO: add await
           future:  Provider.of<AuthService>(context, listen: false).fetchUserInfo(user.uid),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -32,9 +31,9 @@ class AuthHandler extends StatelessWidget {
             } else if (snapshot.data == true) {
               //is teacher  or is student
               if ( Provider.of<AuthService>(context).generalUser!.isTeacher) {
-                return TeacherHomeScreen(); // change it to teacher
+                return TeacherHomeScreenView(); // change it to teacher
               } else {
-                return StudentHomeScreen();
+                return StudentHomeScreenView();
               }
             }
             else {
