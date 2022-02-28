@@ -1,5 +1,5 @@
 
-class ClassButtons {
+class ClassroomDetailButtons {
   Map<String, dynamic>? studentButtons = {
     'view_attendance': '/view_attendace',
     'scan_qr': '/scan_qr',

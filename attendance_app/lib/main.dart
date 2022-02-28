@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/providers/classroom_proivder.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,7 @@ void main() async {
         child:  const AppView(),
         providers: [
           ChangeNotifierProvider(create: (_) => AuthService()),
+          ChangeNotifierProvider(create: (_) => ClassroomProvider(),)
         ],
       ));
 }

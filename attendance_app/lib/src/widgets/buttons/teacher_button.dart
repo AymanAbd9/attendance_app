@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 class TeacherButton extends StatelessWidget {
   final String label;
-  final IconData icon;
-  // final String route;
+  // final IconData icon;
+  final String route;
   const TeacherButton({
     Key? key,
     required this.label,
-    required this.icon,
-    // required this.route,
+    // required this.icon,
+    required this.route,
   }) : super(key: key);
 
   @override
@@ -27,12 +27,12 @@ class TeacherButton extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            // Navigator.pushNamed(context, route);
+            Navigator.pushNamed(context, route);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon),
+              // Icon(icon),
               Text(label),
             ],
           ),

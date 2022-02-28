@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/widgets/buttons/classroom_buttons.dart';
+import 'package:attendance_app/src/widgets/buttons/classroom_detail_buttons.dart';
 import 'package:attendance_app/src/screens/starter_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_app/src/services/auth_service.dart';
@@ -50,9 +50,9 @@ class StudentHomeScreenView extends StatelessWidget {
     );
   }
   List<Widget> generateButtons() {
-    ClassButtons _classButtons = ClassButtons();
+    ClassroomDetailButtons _classroomDetailButtons = ClassroomDetailButtons();
     List<Widget> _widgets = [ ]; 
-    _classButtons.studentButtons!.forEach((key, value) { 
+    _classroomDetailButtons.studentButtons!.forEach((key, value) { 
       _widgets.add(
         ElevatedButton(
           

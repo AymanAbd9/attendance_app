@@ -59,7 +59,7 @@ class _TeacherHomeScreenViewState extends State<TeacherHomeScreenView> {
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
                     childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 5,
+                    crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     ),
                 itemCount: snapshot.data!.length,

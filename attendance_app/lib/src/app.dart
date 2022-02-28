@@ -1,4 +1,8 @@
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screens/add_student_screen_view.dart';
 import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screen.dart';
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screens/teacher_edit_attendance_screen_view.dart';
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screens/teacher_show_qr_screen_view.dart';
+import 'package:attendance_app/src/screens/teacher_screens/teacher_class_details_screens/teacher_view_attendance_screen_view.dart';
 import 'package:flutter/material.dart';
 import './screens/starter_screens/welcome_screen.dart';
 
@@ -11,11 +15,12 @@ class AppView extends StatelessWidget {
     return MaterialApp(
       title: 'attendance app',
       home: const WelcomeScreenView(),
-      // routes: {
-      //   //TODO: specify student classroom details screen view here
-      //   // WelcomeScreenView.routeName:(context) => const WelcomeScreenView(),
-      //   // TeacherClassroomDetailScreenView.routeName: (context) => TeacherClassroomDetailScreenView(),
-      // },
+      routes: {
+        '/add_student': (context) => const AddStudentScreenView(),
+        '/view_attendace':(context) => TeacherViewAttendanceScreenView(),
+        '/show_qr': (context) => TeacherShowQrScreenView(),
+        '/edit_attendace': (context) => TeacherEditAttendanceScreenView(),
+      },
     );
   }
 }

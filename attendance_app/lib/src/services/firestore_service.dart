@@ -29,8 +29,12 @@ class FirestoreService {
         );
   }
 
+  // Future<Classroom> getAClassroom(String classId) async {
+  //   await _firebaseFirestore.collection('classes').where(classId).get();
+  // }
+
   Future<void> deleteAllClassroomDocs() async {
-    var collection = FirebaseFirestore.instance.collection('classes');
+    var collection = _firebaseFirestore.collection('classes');
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
       await doc.reference.delete();
